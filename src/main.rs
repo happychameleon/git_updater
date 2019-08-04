@@ -1,22 +1,16 @@
 extern crate clap;
-use clap::{App, Arg, SubCommand};
+use clap::{App, Arg};
 
-use std::borrow::Borrow;
-use std::env;
-use std::ffi::OsStr;
 use std::fs;
-use std::io::{BufRead, BufReader, BufWriter, Write};
-use std::path::Path;
-use std::process::{Command, Stdio};
+use std::process::{Command};
 use std::str;
 
 //The mvp idea is to simple create a program that goes in to each folder
 // and calls git pull to update the project to the latest state.
-
 fn main() {
     let matches = App::new("The git updater")
         .version("0.1").author("Max Hackinger")
-        .about("this is a simple program that updates all the git repositories laying around on your machine that you want to update")
+        .about("this is a simple program that updates all the git repositories laying around on your machine that you want updated")
         .arg(Arg::with_name("directory")
             .short("d")
             .long("directory")
@@ -55,9 +49,9 @@ fn git_update_command(path_project: String) {
         .output()
         .expect("failed to execute process");
 
-    let hello = output.stdout;
+    let output = output.stdout;
 
-    let s = match str::from_utf8(&hello) {
+    let s = match str::from_utf8(&output) {
         Ok(v) => v,
         Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
     };
