@@ -10,13 +10,13 @@ use std::path::Path;
 use std::process::{Command, Stdio};
 use std::str;
 
-//The mvp idea is to simple create a programm that goes in to each folder
+//The mvp idea is to simple create a program that goes in to each folder
 // and calls git pull to update the project to the latest state.
 
 fn main() {
     let matches = App::new("The git updater")
         .version("0.1").author("Max Hackinger")
-        .about("this is a simple programm that updates all the git repositories laying around on your maschin that you want to update")
+        .about("this is a simple program that updates all the git repositories laying around on your machine that you want to update")
         .arg(Arg::with_name("directory")
             .short("d")
             .long("directory")
