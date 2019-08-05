@@ -30,14 +30,14 @@ fn main() {
 
     for path in paths {
         let path_project = path
+            .as_ref()
             .unwrap()
             .path()
             .as_os_str()
             .to_str()
             .unwrap()
             .to_string();
-
-        if is_git_repo(&path_project) {
+        if path.as_ref().unwrap().file_type().unwrap().is_dir() && is_git_repo(&path_project) {
             git_update_command(&path_project);
         }
     }
