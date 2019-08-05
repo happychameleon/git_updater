@@ -20,6 +20,7 @@ fn main() {
         .get_matches();
 
     let file_path = matches.value_of("directory").unwrap();
+
     println!(
         "git updater will start updating all git repos in {}",
         file_path
@@ -36,11 +37,25 @@ fn main() {
             .unwrap()
             .to_string();
 
-        git_update_command(path_project);
+        if is_git_repo(&path_project) {
+            git_update_command(&path_project);
+        }
     }
 }
 
-fn git_update_command(path_project: String) {
+fn is_git_repo(path_project: &String) -> bool{
+    let mut is_repo = false;
+    let paths = fs::read_dir(path_project).unwrap();
+    for path in paths {
+        let new_path = path.unwrap().file_name().as_os_str().to_str().unwrap().to_string();
+        if new_path.eq(&".git".to_string()) {
+            is_repo = true;
+        }
+    }
+    return is_repo;
+}
+
+fn git_update_command(path_project: &String) {
     //arguments for git command
     let git_args = vec!["-C", &path_project[..], "pull"];
 
