@@ -26,6 +26,10 @@ fn main() {
         file_path
     );
 
+    search_dir(file_path);
+}
+
+fn search_dir(file_path: &str){
     let paths = fs::read_dir(file_path).unwrap();
 
     for path in paths {
@@ -40,6 +44,9 @@ fn main() {
         if path.as_ref().unwrap().file_type().unwrap().is_dir() && is_git_repo(&path_project) {
             git_update_command(&path_project);
         }
+        else if path.as_ref().unwrap().file_type().unwrap().is_dir() {
+            search_dir(path_project.as_str())
+        }
     }
 }
 
@@ -47,7 +54,13 @@ fn is_git_repo(path_project: &String) -> bool{
     let mut is_repo = false;
     let paths = fs::read_dir(path_project).unwrap();
     for path in paths {
-        let new_path = path.unwrap().file_name().as_os_str().to_str().unwrap().to_string();
+        let new_path = path
+            .unwrap()
+            .file_name()
+            .as_os_str()
+            .to_str()
+            .unwrap()
+            .to_string();
         if new_path.eq(&".git".to_string()) {
             is_repo = true;
         }
